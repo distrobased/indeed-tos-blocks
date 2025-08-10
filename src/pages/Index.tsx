@@ -1,53 +1,94 @@
-import { TOSHeader } from "@/components/TOSHeader";
-import { TOSSection } from "@/components/TOSSection";
-import { tosData } from "@/data/tosData";
+import { Navbar } from "@/components/Navbar";
+import { JobHeader } from "@/components/JobHeader";
+import { JobCard } from "@/components/JobCard";
+import { JobFilters } from "@/components/JobFilters";
+import { jobsData } from "@/data/jobsData";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SlidersHorizontal, Grid3X3, List } from "lucide-react";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-subtle">
-      <TOSHeader />
+      <Navbar />
+      <JobHeader />
       
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-4">
-            Essential TOS Sections
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Comprehensive terms of service framework covering all critical legal aspects 
-            for modern platforms and marketplaces.
-          </p>
-        </div>
-        
-        <div className="space-y-6">
-          {tosData.map((section, index) => (
-            <TOSSection
-              key={index}
-              title={section.title}
-              description={section.description}
-              content={section.content}
-              icon={<section.icon className="h-5 w-5" />}
-            />
-          ))}
-        </div>
-        
-        <div className="mt-16 text-center">
-          <div className="bg-card border border-border/50 rounded-lg p-8 shadow-card">
-            <h3 className="text-2xl font-semibold text-foreground mb-4">
-              Ready to Generate Your TOS?
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Customize these sections for your specific platform needs. Export as PDF, 
-              Word document, or integrate directly into your application.
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Results Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground mb-2">
+              Featured Jobs
+            </h2>
+            <p className="text-muted-foreground">
+              {jobsData.length} jobs found • Updated daily
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-primary text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-all shadow-elegant">
-                Start Customization
-              </button>
-              <button className="border border-border px-6 py-3 rounded-lg font-medium hover:bg-muted/50 transition-colors text-foreground">
-                Download Template
-              </button>
+          </div>
+          
+          <div className="flex items-center gap-4 mt-4 sm:mt-0">
+            <Select defaultValue="relevant">
+              <SelectTrigger className="w-40">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="relevant">Most Relevant</SelectItem>
+                <SelectItem value="recent">Most Recent</SelectItem>
+                <SelectItem value="salary">Highest Salary</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <div className="flex items-center border border-border rounded-lg">
+              <Button variant="ghost" size="sm" className="rounded-r-none">
+                <Grid3X3 className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="rounded-l-none border-l">
+                <List className="h-4 w-4" />
+              </Button>
             </div>
           </div>
+        </div>
+        
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Filters Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-24">
+              <JobFilters />
+            </div>
+          </div>
+          
+          {/* Job Listings */}
+          <div className="lg:col-span-3">
+            <div className="grid gap-6">
+              {jobsData.map((job) => (
+                <JobCard key={job.id} {...job} />
+              ))}
+            </div>
+            
+            {/* Load More */}
+            <div className="text-center mt-12">
+              <Button variant="outline" size="lg" className="px-8">
+                Load More Jobs
+              </Button>
+              <p className="text-sm text-muted-foreground mt-4">
+                Showing 8 of 50,000+ jobs
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Bottom CTA */}
+        <div className="mt-16 bg-card border border-border/50 rounded-lg p-8 text-center shadow-card">
+          <h3 className="text-2xl font-bold text-foreground mb-4">
+            Get Job Alerts
+          </h3>
+          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+            Never miss out on your dream job. Get personalized job recommendations 
+            delivered to your inbox.
+          </p>
+          <Button size="lg" className="bg-primary hover:bg-primary/90">
+            Set Up Job Alerts
+          </Button>
         </div>
       </div>
     </div>
